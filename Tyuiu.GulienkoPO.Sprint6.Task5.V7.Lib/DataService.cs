@@ -1,32 +1,41 @@
-﻿using tyuiu.cources.programming.interfaces.Sprint6;
-
-namespace Tyuiu.GulienkoPO.Sprint6.Task4.V7.Lib
+﻿using System.IO;
+using System.Reflection.PortableExecutable;
+using tyuiu.cources.programming.interfaces.Sprint6;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+namespace Tyuiu.GulienkoPO.Sprint6.Task5.V7.Lib
 {
-    public class DataService : ISprint6Task4V7
+    public class DataService : ISprint6Task5V7
+
     {
-        public double[] GetMassFunction(int startValue, int stopValue)
+        public double[] LoadFromDataFile(string path)
         {
-            int count = 0;
-            int len = Math.Abs(startValue) + Math.Abs(stopValue) + 1;
-            double[] array = new double[len];
-            for (int x = startValue; x <= stopValue; x++)
+
+            List<double> res = new List<double>();
+            using (StreamReader sReader = new StreamReader(path))
             {
-                if (x + 2 != 0)
+                string line;
+                while ((line = sReader.ReadLine()) != null)
                 {
-                    double y = Math.Cos(x) + (Math.Cos(x) / (x + 2)) - 3 * x;
-                    y = Math.Round(y, 2);
-                    array[count] = y;
-                    count++;
-                }
-                else
-                {
-                    double y = 0;
-                    array[count] = y;
-                    count++;
+                    line = line.Replace(".", ",");
+                    string[] num = line.Split(' ');
+                    double[] data = new double[num.Length];
+                    foreach (string s in num)
+                    {
+                        double d = double.Parse(s);
+                        if (d > 5)
+                        {
+                            res.Add(d);
+                        }
+                        else continue;
+                    }
+
                 }
 
             }
-            return array;
+            double[] result = res.ToArray();
+            return result;
+
+
         }
     }
 }
